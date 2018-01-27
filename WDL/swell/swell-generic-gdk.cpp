@@ -476,7 +476,10 @@ void swell_oswindow_manage(HWND hwnd, bool wantfocus)
         attr.wmclass_name = (gchar*)appname;
         attr.wmclass_class = (gchar*)appname;
         attr.window_type = GDK_WINDOW_TOPLEVEL;
-        hwnd->m_oswindow = gdk_window_new(NULL,&attr,GDK_WA_X|GDK_WA_Y|(appname?GDK_WA_WMCLASS:0));
+        GdkScreen *defscreen = gdk_screen_get_default();
+        GdkVisual *visual = gdk_screen_get_rgba_visual(defscreen);
+        attr.visual = !visual ? gdk_screen_get_system_visual(defscreen) : visual;  // default visual if no compositing manager
+        hwnd->m_oswindow = gdk_window_new(NULL,&attr,GDK_WA_X|GDK_WA_Y|GDK_WA_VISUAL|(appname?GDK_WA_WMCLASS:0));
  
         if (hwnd->m_oswindow) 
         {
@@ -889,6 +892,12 @@ static void OnExposeEvent(GdkEventExpose *exp)
     cairo_surface_t *temp_surface = (cairo_surface_t*)bm->Extended(0xca140,NULL);
     if (temp_surface) cairo_set_source_surface(crc, temp_surface, 0,0);
     cairo_paint(crc);
+
+    cairo_set_operator (crc, CAIRO_OPERATOR_CLEAR);
+    cairo_rectangle (crc, 7, 7, 100, 100);
+    cairo_set_source_rgba (crc, 0, 0, 0.9, 1);
+    cairo_fill (crc);
+
     cairo_destroy(crc);
     if (temp_surface) bm->Extended(0xca140,temp_surface); // release
 
