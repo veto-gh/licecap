@@ -893,9 +893,14 @@ static void OnExposeEvent(GdkEventExpose *exp)
     if (temp_surface) cairo_set_source_surface(crc, temp_surface, 0,0);
     cairo_paint(crc);
 
-    cairo_set_operator (crc, CAIRO_OPERATOR_CLEAR);
-    cairo_rectangle (crc, 7, 7, 100, 100);
+    // Does NOT belong here!!
+    RECT r;
+    GetWindowRect(GetDlgItem(hwnd,1006),&r);
+    ScreenToClient(hwnd,(LPPOINT)&r);
+    ScreenToClient(hwnd,((LPPOINT)&r)+1);
+    cairo_rectangle (crc, r.left, r.top, r.right-r.left, r.bottom-r.top);
     cairo_set_source_rgba (crc, 0, 0, 0.9, 1);
+    cairo_set_operator (crc, CAIRO_OPERATOR_CLEAR);
     cairo_fill (crc);
 
     cairo_destroy(crc);
