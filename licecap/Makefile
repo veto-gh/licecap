@@ -54,7 +54,7 @@ else
 	CFLAGS += -O2 -DNDEBUG
 endif
 CFLAGS += -DSWELL_LICE_GDI -DPNG_WRITE_SUPPORTED
-LFLAGS = -lpthread -ldl -lX11 -lXi
+LFLAGS = -lpthread -ldl -lX11 -lXi -lXfixes
 
 
 ###### GDK
