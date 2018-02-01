@@ -1417,14 +1417,15 @@ static WDL_DLGRET liceCapMainProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
         if (BeginPaint(hwndDlg,&ps))
         {
           RECT r;
-          void DrawTransparentRectInCurrentContext(RECT r);
           GetWindowRect(GetDlgItem(hwndDlg,IDC_VIEWRECT),&r);
           ScreenToClient(hwndDlg,(LPPOINT)&r);
           ScreenToClient(hwndDlg,((LPPOINT)&r)+1);
+#ifdef __APPLE__
+          void DrawTransparentRectInCurrentContext(RECT r);
           DrawTransparentRectInCurrentContext(r);
-#if !defined(__APPLE__) && !defined(_WIN32) 
-          void SetGdkWindowPassThrough(HWND, RECT);
-          SetGdkWindowPassThrough(hwndDlg,r);
+#else
+          void DrawTransparentRectInCurrentContext(HWND, RECT);
+          DrawTransparentRectInCurrentContext(hwndDlg,r);
 #endif
           HPEN pen = CreatePen(PS_SOLID,0,RGB(128,128,128));
           HGDIOBJ oldPen = SelectObject(ps.hdc,pen);
