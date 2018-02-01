@@ -8,9 +8,19 @@
 #include <X11/extensions/shape.h>
 
 bool GetScreenData(int xpos, int ypos, LICE_IBitmap *bmOut)
-{
-  printf("Getting screen data failed\n");
-	return false;
+{ 
+  // https://git.xfce.org/apps/xfce4-screenshooter/tree/lib/screenshooter-capture.c#n325
+  GdkWindow *root = gdk_get_default_root_window ();
+  GdkPixbuf *sshot = gdk_pixbuf_get_from_window (root, xpos, ypos, bmOut->getWidth(), bmOut->getHeight());
+  GdkPixbuf *sshota = gdk_pixbuf_add_alpha(sshot, FALSE, 0, 0, 0);
+  guchar *pixels = gdk_pixbuf_get_pixels(sshota);
+    
+  LICE_IBitmap* tmpBm = new LICE_WrapperBitmap((LICE_pixel*)pixels, gdk_pixbuf_get_width(sshota), 
+                                               gdk_pixbuf_get_height(sshota), 
+                                               gdk_pixbuf_get_rowstride(sshota)/4, true);
+  LICE_Copy(bmOut, tmpBm);
+  delete tmpBm;
+	return true;
 }
 
 void DoMouseCursor(LICE_IBitmap *bmOut, int xoffs, int yoffs)
@@ -20,7 +30,7 @@ void DoMouseCursor(LICE_IBitmap *bmOut, int xoffs, int yoffs)
 
 void DrawTransparentRectInCurrentContext(RECT r)
 {
-  printf("Drawing transparent rect failed \n");
+  
 }
 
 void RefreshWindowShadows(HWND h)
