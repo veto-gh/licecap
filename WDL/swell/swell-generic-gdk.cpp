@@ -178,7 +178,8 @@ static void on_deactivate()
   {
     if (h->m_oswindow)
     {
-      if (h->m_israised)
+//      if (h->m_israised)
+      if (!h->m_israised)  // stupid quick "fix". This is wrong! see https://www.askjf.com/index.php?q=4009s and https://www.askjf.com/index.php?q=4011s 
         gdk_window_set_keep_above(h->m_oswindow,FALSE);
       if (!h->m_enabled) 
         gdk_window_set_accept_focus(h->m_oswindow,TRUE); // allow the user to activate app by clicking
