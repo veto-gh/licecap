@@ -1198,7 +1198,7 @@ static WDL_DLGRET liceCapMainProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
 
       g_wndsize.init(hwndDlg);
       g_hwnd=NULL;
-#ifndef _WIN32
+#ifdef __APPLE__
       SWELL_PostQuitMessage(0);
 #endif
 
