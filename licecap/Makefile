@@ -35,7 +35,7 @@ OTHER_OBJS = wndsize.o filebrowse.o
 
 RESFILES = licecap.rc_mac_dlg licecap.rc_mac_menu
 
-OBJS += licecap_ui.o capturewindow.o $(SWELL_OBJS) $(GIF_OBJS) $(PNG_OBJS) $(ZLIB_OBJS) $(LICE_OBJS) $(OTHER_OBJS)
+OBJS += main.o licecap_ui.o capturewindow.o $(SWELL_OBJS) $(GIF_OBJS) $(PNG_OBJS) $(ZLIB_OBJS) $(LICE_OBJS) $(OTHER_OBJS)
 
 
 
