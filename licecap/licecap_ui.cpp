@@ -1947,7 +1947,13 @@ INT_PTR SWELLAppMain(int msg, INT_PTR parm1, INT_PTR parm2)
           if (p && *p)
           {
             g_ini_file.Set(p);
-            g_ini_file.Append("/Library/Application Support/LICEcap");
+            g_ini_file.Append(
+#ifdef __APPLE__
+                "/Library/Application Support/LICEcap"
+#else
+                "/.config/LICEcap"
+#endif
+                );
             mkdir(g_ini_file.Get(),0777);
             
             g_ini_file.Append("/licecap.ini");
